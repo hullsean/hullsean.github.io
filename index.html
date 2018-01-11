@@ -1,0 +1,245 @@
+  
+
+Week 1 April 1 - April 10
+
+Friday April 1st 
+o coord with Jake on getting started
+o dropbox for password, creds & server docs
+o reviewing system network diagram
+o reviewing techlist excel doc 
+- techlist
+- server list & access
+- database access
+- projects -old 
+o reviewing systems access.docx
+o testing AWS login credentials
+- issue with permissions
+- coordinating with Jake on Admin access
+o testing AWS creds again
+- access to all AWS services
+- IAM for seanhull user
+- enabling MFA for user
+o questions for outgoing op Roger
+
+Sat April 2nd (no hours)
+
+Sun April 3rd (no hours)
+
+
+Mon April 4th 
+o coord with Jake to get onboarded
+o sending W9 form to Acme Inc. 
+o setup slack 
+o plan for today
+- review aws servers
+- review dg servers
+- questions for Roger
+- review docs
+o coord with Roger on VPN access
+- reach out to Larry
+- emailed Larry CC Jake
+- Larry requests Acme access CC to mgmt
+- turns out VPN access isn't required
+- can just whitelist IP inside the relevant security groups
+- coord with J, going ahead to add whitelist 1.2.3.4/32
+o updating Acmemedia-sandbox security group
+- trying to reach host, coord with Roger
+- asked to drop ssh key onto servers
+- asked about .ssh/config file - Did you get from Jake?
+- found the AWS PEM folder that I overlooked :)
+o configuring .ssh/config file 
+- copying up to iheavy.com
+- setting permissions 600 on pem files
+- ssh to sandbox successful!!
+o adding whitelist to Acmemedia-prod security group
+o updating Jake - access is working
+
+Tue April 5th
+o coord with Jake on todo list for today
+o verifying mysql access
+- review security groups
+- no whitelisted IPs
+- can reach from webserver?
+- test db1 MySQL access via webserver, OK
+- test db2 MySQL access via webserver OK
+o reviewing monitoring system
+- testing nagios access 
+- locating configurations
+- reviewing dashboard
+- understanding tests
+- down system db1 - 108 days - why?
+- down system p1 - LB1 sailthru check down for 85 days why?
+- down staging - 174 days why?
+- emailed nagios questions to Roger
+- request to add me to nagios notifications group
+o coord with Roger on questions
+- nagios setup & stopped checks
+- add to admin group
+o github access for sandbox details doc
+o login to Acmemedia wp
+- check list of 25 plugins
+- review recent backups on abc (8)
+o login to DDD wordpress
+- check list of 33 plugins
+- review recent backups in abc  (8)
+o login to EEE wordpress
+- check list of 31 plugins
+- review recent backups in abc  (37)
+o login to FFF wordpress
+- check list of 35 plugins
+- review recent backups in abc (8)
+o login to DDD
+o login to EEE
+o login to FFF
+o emailed Roger - request details about Glasgow server
+o review various Acme github pages
+
+Wed April 6th
+o coord with Jake on todos for today
+o reviewing github pages docs on various system processes
+- git deployment server page
+- git deployment process
+- new deploy process Nov 2015
+- wiki pages are a bit sparse overall
+o tested jenkins login
+- found API cache clear
+- found varnish cache clear
+o understand separation of dev & production
+o digging into Jenkins docs 
+o understanding build process
+o tried login to EEEv2 wp login, don't have pass
+- coordinating with Jake on that login
+o checking on nfs disk full nagios alert
+- can't reach box
+- notified Jake & Roger via slack
+- slack with Lester
+- yes nfs01 space 90% is normal
+- new launch of EEE tomorrow & old stuff will be deleted then
+o updating nfs security group 
+- ssh login working now.
+o getting diskspace error on prod04
+- messaged Lester, related to EEE launch tonight
+o email from Jake - local dev & test environment setups are slow
+- very overengineered for simple wordpress site
+- not using multisites, so have FOUR SEPARATE setups
+- different plugins on each install
+- four sets of logins
+- four places to update
+- four places to test/qa
+- migration may be complex based on custom Acme plugins
+- shortcodes compatability across four sites
+- not using ithemes security plugin
+o discuss with Lester on slack
+- API is hosted on datagram
+- single point of failure for the site currently
+- outage there would take the site down
+- migrate to AWS using internal loadbalancer & webservers in 2 AZs
+
+Thu April 7th
+o call with Jake on EEEv2 launch today
+- general observations of Acme sites & architecture
+o reviewing access.Acmemedia.com
+o discuss with Jake
+- hosting media files on S3 vs nfs
+- using multisite
+- using wordpress through API only
+- javascript based static site builder
+- moving API to amazon EC2
+- create slave MySQL db of master MySQL currently in datadotnet
+o discuss with Roger
+- launch plan
+- two vhosts new.EEE.com
+- old.EEE.com
+- simply restart apache to enable switch
+- refresh maxCDN after launch
+o review EEEv2 deploy steps
+- pre-deploy steps
+- DNS for old.EEE.com
+- add vhosts EEEv2.conf
+- restart apache
+- restart varnish
+- clear maxcdn
+o verified login to access.Acmemedia.com
+- API log is in /var/log/httpd/production-access.log
+- login as sandy & root
+o not able to login to dashboard.Acmemedia.com
+- tried admin & pass in datagram docs
+
+o meeting onsite with Jake & Roger  
+- discuss deployment process
+- discuss legacy systems
+- discuss NFS vs S3 for media files
+- discuss plugins & management
+- discuss wordpress version upgrade process
+- discuss plugin version upgrade process
+- discuss Jenkins access, configs, success & error logs
+- discuss managing secrets file
+- script that takes webserver out of load balancer while apache restarting
+o met Rachel, Louis, Lester, Rick, Stuart, Jack
+
+Fri April 8th
+o testing Acme stage build
+o emailed Roger further questions
+- where is secrets file configuration & process
+- composer is PHP dependency management
+- what are the steps to upgrade plugin only
+o summarizing & notes on Acme 
+o put together steps for complete firedrill 
+- questions for Roger, requesting help with process
+- build webserver with varnish & apache
+- should setup separate NFS server
+- should use Acmemedia.com bc it uses API heavily
+- setup copy of API server & db
+- setup mysql instance for wordpress
+- setup amazon cloudfront for content
+o outline additional questions for Roger
+- how to upgrade plugin only
+- composer for php dependency management
+- how are secrets files managed & deployed outside developer access
+o secrets management
+- asked Roger for clarificaiton
+o plugin-only installs
+- reviewed jenkins configs
+- various questions to Roger
+- composer:install seems to be the key change (not just deploy which does all?)
+- why is STAGING PLUGIN DEPLOY for ORIM different?
+o what happens when github account is disabled!!
+- jenkins changes for new github deploy account
+- THIS WOULD BREAK ALL DEPLOYS & CI/CD pipeline
+- capistrano changes?
+- any other changes on sandbox
+- any other dependencies for Roger github?
+o email step-by-step outline to add a plugin
+- reviewing steps with Roger
+- making sure no missing pieces
+
+Sat April 9th (1 off-hour)
+o receiving nagios alert for p1
+o emailed Roger, Jake about issue
+o slack messaged Jake
+o raises question about off-hours coverage
+
+Sun April 10th (2 off-hours)
+
+o p1 still throwing errors
+o coordinating with Lester & Ralph on Slack
+- reiterated this is *not* an issue with NFS
+- because of large number of nagios alerts, p1 lost in the shuffle
+- p1 is new error, 97% so more dire than the NFS issue
+- Lester attempting to login, fails because of AWS security group
+- adding his *own* home IP as whitelist  (devs have access to AWS console)
+- first time logging in from home?
+- Lester deleted old DDD logfiles to clear up 1.2G
+- plan to touch base again tomorrow about issue
+o emailing Jake about status
+o questions for Jake
+- how to manage on-call & alerts
+- how to manage developer access
+- Roger mentioned secrets files are not shared with devs
+o Lester questions, comments on servers & diskspace
+
+
+
+
+
+
